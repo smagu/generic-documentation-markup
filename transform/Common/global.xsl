@@ -6,6 +6,7 @@
     <xsl:template name="check-format-type">
         <h1>
             <xsl:choose>
+                <xsl:when test="//grammar">RelaxNG Documentation</xsl:when>
                 <xsl:when test="//iso:schema">ISO Schematron Documentation</xsl:when>
                 <xsl:when test="//xsl:stylesheet">XSLT Documentation</xsl:when>
                 <xsl:otherwise>Generic Documentation</xsl:otherwise>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+  xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0"
+  xmlns:m="http://www.w3.org/1998/Math/MathML"
+  xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:test="http://www.example.com/namespace/testing"
+  xmlns:seshat="http://www.example.com/new-namespace/seshat"
+  datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  
+  
+  
+  <define name="core.title">
+    <a:documentation>Training instruction element for </a:documentation>
+    <element name="test:note">
+      <text/>
+    </element>
+  </define>
+  
+  
+  <define name="core.head">
+    <element name="head">
+      <empty/>
+    </element>
+  </define>
+  
+  <seshat:doc>
+    <seshat:head>
+      <seshat:title>testing.emph</seshat:title>
+      <seshat:creator>Thomas Smith</seshat:creator>
+      <seshat:created>20/02/2013</seshat:created>
+    </seshat:head>
+    <seshat:body>
+      <seshat:desc>
+        <seshat:p>Schematron rule for testing everything at root level</seshat:p>
+      </seshat:desc>
+      <seshat:code>&lt;p>some text &lt;>proc:nl/>&lt;/p></seshat:code>
+      <seshat:change-grp>
+        <seshat:change date="01-01-2013">
+          <seshat:contributor>Thomas Smith</seshat:contributor>
+          <seshat:reason>Changed so it has a new 'nla' namespace</seshat:reason>
+        </seshat:change>
+        <seshat:change date="02-02-2013">
+          <seshat:contributor>John Smith</seshat:contributor>
+          <seshat:reason>Namespace typo - must be 'nl'</seshat:reason>
+        </seshat:change>
+      </seshat:change-grp>
+    </seshat:body>
+  </seshat:doc>
+  <define name="testing.emph">
+    <element name="test:emph">
+      <ref name="attlist.testing.emph"/>
+      <zeroOrMore>
+        <ref name="testing.emph"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="attlist.testing.emph" combine="interleave">
+    <optional>
+      <attribute name="typestyle">
+        <choice>
+          <value>bf</value>
+          <value>it</value>
+          <value>ib</value>
+          <value>un</value>
+          <value>dbl-un</value>
+        </choice>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="highlight">
+        <choice>
+          <value>CTA</value>
+          <value>EU</value>
+        </choice>
+      </attribute>
+    </optional>
+    
+    <optional>
+      <attribute name="lni"/>
+    </optional>
+  </define>
+  
+  
+  
+  <define name="chapter">
+    <element name="ch">
+      <oneOrMore>
+        <choice>
+          <group>
+            <oneOrMore>
+              <choice>
+                <ref name="core.title"/>
+              </choice>
+            </oneOrMore>
+          </group>
+        </choice>
+      </oneOrMore>
+      <optional>
+        <choice>
+          <ref name="testing.header-grp"/>
+        </choice>
+      </optional>
+    </element>
+  </define>
+  
+  <define name="testing.header-grp">
+    <a:documentation> test:header-grp is used to group header elements and horizontal lines that
+      combined create a header. </a:documentation>
+    <element name="test:header-grp">
+      <zeroOrMore>
+        <element name="text">
+          <text/>
+        </element>
+      </zeroOrMore>
+    </element>
+  </define>
+  
+  <start combine="interleave">
+    <a:documentation> Define what element will start each new XML document </a:documentation>
+    <choice>
+      <ref name="chapter"/>
+    </choice>
+  </start>
+</grammar>
